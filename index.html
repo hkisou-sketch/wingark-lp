@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MotionBoard LLMO戦略提案 | GAS × WingArc1st</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --mb-blue: #3C7BE3;
+  --mb-blue-light: #6B9BED;
+  --mb-blue-dark: #2A5BBF;
+  --mb-blue-bg: #EBF2FD;
+  --mb-dark: #4B4346;
+  --mb-dark-deep: #1A1618;
+  --navy: #0F1A2E;
+  --teal: #0891B2;
+  --green: #10B981;
+  --amber: #F59E0B;
+  --red: #EF4444;
+  --purple: #8B5CF6;
+  --gray-50: #F8FAFC;
+  --gray-100: #F1F5F9;
+  --gray-200: #E2E8F0;
+  --gray-400: #94A3B8;
+  --gray-600: #475569;
+  --gray-800: #1E293B;
+  --radius: 12px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Sans JP','DM Sans',sans-serif;color:var(--gray-800);background:#fff;line-height:1.8;font-size:16px}
+.container{max-width:1100px;margin:0 auto;padding:0 24px}
+
+/* ===== NAV ===== */
+nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--gray-200);padding:12px 0}
+nav .container{display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14px;color:var(--mb-dark)}
+.nav-logo .dot{width:8px;height:8px;border-radius:50%;background:var(--mb-blue)}
+nav ul{display:flex;list-style:none;gap:6px}
+nav a{text-decoration:none;color:var(--gray-600);font-size:14px;font-weight:500;padding:6px 12px;border-radius:6px;transition:.2s}
+nav a:hover{background:var(--mb-blue-bg);color:var(--mb-blue)}
+
+/* ===== HERO ===== */
+.hero{background:linear-gradient(135deg, var(--navy) 0%, var(--mb-dark-deep) 40%, #1e2d4a 100%);color:#fff;padding:100px 0 80px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;right:-20%;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(60,123,227,.15),transparent 70%)}
+.hero::after{content:'';position:absolute;bottom:-30%;left:-10%;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(8,145,178,.1),transparent 70%)}
+.hero-label{display:inline-block;background:rgba(60,123,227,.2);border:1px solid rgba(60,123,227,.3);padding:4px 14px;border-radius:20px;font-size:12px;color:var(--mb-blue-light);margin-bottom:20px;letter-spacing:.5px}
+.hero h1{font-size:clamp(32px,5vw,52px);font-weight:900;line-height:1.25;margin-bottom:16px;letter-spacing:-.02em}
+.hero h1 span{color:var(--mb-blue-light)}
+.hero p{font-size:18px;color:var(--gray-400);max-width:600px;margin-bottom:32px}
+.hero-meta{display:flex;gap:24px;font-size:15px;color:var(--gray-400)}
+.hero-meta strong{color:#fff}
+
+/* ===== SECTION ===== */
+section{padding:80px 0}
+section:nth-child(even){background:var(--gray-50)}
+.section-label{display:inline-block;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--mb-blue);margin-bottom:8px}
+.section-title{font-size:clamp(28px,4vw,42px);font-weight:900;margin-bottom:12px;letter-spacing:-.01em}
+.section-sub{color:var(--gray-600);font-size:17px;margin-bottom:40px;max-width:750px}
+
+/* ===== STAT CARDS ===== */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin-bottom:48px}
+.stat-card{background:#fff;border-radius:var(--radius);padding:28px 24px;border:1px solid var(--gray-200);text-align:center;transition:.2s}
+.stat-card:hover{border-color:var(--mb-blue);box-shadow:0 4px 24px rgba(60,123,227,.1)}
+.stat-val{font-size:48px;font-weight:900;font-family:'DM Sans',sans-serif;line-height:1}
+.stat-label{font-size:15px;color:var(--gray-600);margin-top:8px}
+.c-blue{color:var(--mb-blue)}.c-navy{color:var(--navy)}.c-purple{color:var(--purple)}.c-red{color:var(--red)}.c-teal{color:var(--teal)}.c-green{color:var(--green)}.c-amber{color:var(--amber)}
+
+/* ===== CHART SECTION ===== */
+.chart-section{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:48px;align-items:start}
+.chart-box{background:#fff;border-radius:var(--radius);padding:24px;border:1px solid var(--gray-200)}
+.chart-box h3{font-size:18px;font-weight:700;margin-bottom:4px}
+.chart-box .n-label{font-size:14px;color:var(--gray-400);margin-bottom:16px}
+.chart-box canvas{width:100%!important;max-height:340px}
+.fa-box{background:#fff;border-radius:var(--radius);border:1px solid var(--gray-200);overflow:hidden}
+.fa-box-header{background:var(--navy);color:#fff;padding:14px 20px;font-size:16px;font-weight:700}
+.fa-item{padding:14px 20px;border-bottom:1px solid var(--gray-100);font-size:15px;color:var(--gray-600);font-style:italic;line-height:1.6}
+.fa-item:last-child{border-bottom:none}
+
+/* ===== INSIGHT BOX ===== */
+.insight{background:var(--mb-blue-bg);border-left:4px solid var(--mb-blue);border-radius:0 var(--radius) var(--radius) 0;padding:18px 24px;font-size:16px;font-weight:500;color:var(--mb-blue-dark);margin-bottom:48px}
+
+/* ===== DETAIL SECTION ===== */
+.detail-header{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.detail-num{background:var(--mb-blue);color:#fff;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
+.detail-header h3{font-size:22px;font-weight:700}
+
+/* ===== STRATEGY CARDS ===== */
+.strategy-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-bottom:48px}
+.strat-card{background:#fff;border-radius:var(--radius);border:1px solid var(--gray-200);padding:24px;position:relative;overflow:hidden;transition:.2s}
+.strat-card:hover{border-color:var(--mb-blue);transform:translateY(-2px);box-shadow:0 8px 24px rgba(60,123,227,.08)}
+.strat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.strat-card.prio-high::before{background:var(--mb-blue)}.strat-card.prio-mid::before{background:var(--teal)}.strat-card.prio-low::before{background:var(--gray-400)}
+.strat-card .badge{font-size:12px;font-weight:700;padding:4px 10px;border-radius:4px;display:inline-block;margin-bottom:10px}
+.badge-high{background:rgba(60,123,227,.1);color:var(--mb-blue)}.badge-mid{background:rgba(8,145,178,.1);color:var(--teal)}.badge-low{background:var(--gray-100);color:var(--gray-600)}
+.strat-card h4{font-size:18px;font-weight:700;margin-bottom:8px}
+.strat-prompt{background:var(--gray-50);border-radius:8px;padding:12px 16px;font-size:14px;color:var(--mb-blue-dark);margin-bottom:10px;font-family:'DM Sans',monospace;line-height:1.6}
+.strat-action{font-size:15px;color:var(--gray-600)}
+
+/* ===== PR PILLARS ===== */
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:48px}
+.pillar{background:var(--navy);color:#fff;border-radius:var(--radius);padding:28px 24px}
+.pillar h4{font-size:18px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.pillar h4 .icon{width:28px;height:28px;border-radius:6px;background:var(--mb-blue);display:flex;align-items:center;justify-content:center;font-size:14px}
+.pillar li{font-size:15px;color:var(--gray-400);margin-bottom:10px;padding-left:16px;position:relative;list-style:none}
+.pillar li::before{content:'▸';position:absolute;left:0;color:var(--mb-blue-light)}
+
+/* ===== ROADMAP ===== */
+.roadmap{display:flex;flex-direction:column;gap:16px;margin-bottom:48px}
+.roadmap-item{display:grid;grid-template-columns:80px 64px 1fr 1fr;gap:16px;align-items:center;background:#fff;border-radius:var(--radius);padding:16px 20px;border:1px solid var(--gray-200)}
+.roadmap-month{font-size:20px;font-weight:900;font-family:'DM Sans',sans-serif}
+.roadmap-badge{font-size:12px;font-weight:700;padding:4px 10px;border-radius:4px;text-align:center;color:#fff}
+.bg-green{background:var(--green)}.bg-blue{background:var(--mb-blue)}.bg-gray{background:var(--gray-400)}
+.roadmap-task{font-size:16px;font-weight:600}.roadmap-detail{font-size:15px;color:var(--gray-600)}
+
+/* ===== THEME CARD ===== */
+.theme-main{background:#fff;border:2px solid var(--mb-blue);border-radius:var(--radius);padding:32px;margin-bottom:24px;position:relative}
+.theme-main .rec-badge{position:absolute;top:-12px;left:24px;background:var(--mb-blue);color:#fff;font-size:13px;font-weight:700;padding:4px 14px;border-radius:20px}
+.theme-main h4{font-size:22px;font-weight:900;margin-top:8px;margin-bottom:16px}
+.theme-grid{display:grid;grid-template-columns:80px 1fr;gap:8px 16px;font-size:16px}
+.theme-grid dt{font-weight:700;color:var(--mb-blue)}
+.theme-grid dd{color:var(--gray-600)}
+.theme-alts{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.theme-alt{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius);padding:24px}
+.theme-alt h4{font-size:18px;font-weight:700;margin-bottom:8px}
+.theme-alt p{font-size:15px;color:var(--gray-600)}
+
+/* ===== TASKS ===== */
+.task-table{width:100%;border-collapse:collapse;margin-bottom:48px}
+.task-table th{background:var(--mb-blue);color:#fff;padding:14px 18px;text-align:left;font-size:15px;font-weight:600}
+.task-table th:first-child{border-radius:var(--radius) 0 0 0}.task-table th:last-child{border-radius:0 var(--radius) 0 0}
+.task-table td{padding:14px 18px;font-size:15px;border-bottom:1px solid var(--gray-100)}
+.task-table tr:nth-child(even) td{background:var(--gray-50)}
+.task-status{font-size:12px;font-weight:700;padding:4px 12px;border-radius:4px;display:inline-block}
+.s-active{background:rgba(60,123,227,.1);color:var(--mb-blue)}.s-wait{background:rgba(245,158,11,.1);color:var(--amber)}.s-plan{background:var(--gray-100);color:var(--gray-600)}.s-done{background:rgba(16,185,129,.1);color:var(--green)}
+
+/* ===== MINING TABLE ===== */
+.mining-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;margin-bottom:48px}
+.mining-card{background:#fff;border-radius:var(--radius);border:1px solid var(--gray-200);padding:20px;display:flex;gap:16px;align-items:start}
+.mining-num{font-size:28px;font-weight:900;font-family:'DM Sans',sans-serif;min-width:48px}
+.mining-card h4{font-size:16px;font-weight:700;margin-bottom:4px}
+.mining-card p{font-size:14px;color:var(--gray-600)}
+
+/* ===== PROMPT LIST ===== */
+.prompt-group{margin-bottom:40px}
+.prompt-group-header{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.prompt-group-header h3{font-size:20px;font-weight:700}
+.prompt-group-badge{font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;color:#fff}
+.prompt-list{display:flex;flex-direction:column;gap:12px}
+.prompt-row{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius);padding:18px 24px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;transition:.2s}
+.prompt-row:hover{border-color:var(--mb-blue);box-shadow:0 2px 12px rgba(60,123,227,.08)}
+.prompt-text{font-size:16px;font-weight:500;color:var(--gray-800)}
+.prompt-text span{color:var(--mb-blue);font-weight:700}
+.prompt-source{font-size:13px;color:var(--gray-400);text-align:right;white-space:nowrap}
+.prompt-raw{background:var(--navy);border-radius:var(--radius);padding:20px 24px;margin-top:12px}
+.prompt-raw-title{font-size:14px;font-weight:700;color:var(--mb-blue-light);margin-bottom:12px}
+.prompt-raw q{display:block;font-size:15px;color:var(--gray-400);font-style:italic;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06);line-height:1.7}
+.prompt-raw q:last-child{border-bottom:none}
+
+/* ===== FOOTER ===== */
+footer{background:var(--navy);color:var(--gray-400);padding:40px 0;text-align:center;font-size:14px}
+
+/* ===== MOBILE ===== */
+@media(max-width:768px){
+  .chart-section{grid-template-columns:1fr}
+  .pillars{grid-template-columns:1fr}
+  .theme-alts{grid-template-columns:1fr}
+  .roadmap-item{grid-template-columns:60px 52px 1fr;gap:8px}
+  .roadmap-detail{display:none}
+  nav ul{display:none}
+  .stat-val{font-size:32px}
+}
+
+/* ===== Q14 QUOTES ===== */
+.quotes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin-bottom:48px}
+.quote-card{background:#fff;border-radius:var(--radius);border:1px solid var(--gray-200);padding:16px 20px;display:flex;justify-content:space-between;align-items:start;gap:12px}
+.quote-card q{font-size:15px;color:var(--gray-600);font-style:italic;flex:1}
+.quote-tag{font-size:12px;font-weight:700;background:var(--mb-blue);color:#fff;padding:4px 10px;border-radius:4px;white-space:nowrap;flex-shrink:0}
+
+/* ===== PIE SECTION ===== */
+.pie-section{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;margin-bottom:48px}
+.pie-callouts{display:flex;flex-direction:column;gap:16px}
+.pie-callout{background:#fff;border-radius:var(--radius);border:1px solid var(--gray-200);padding:24px;text-align:center}
+.pie-callout .big{font-size:52px;font-weight:900;font-family:'DM Sans',sans-serif}
+.pie-callout .label{font-size:15px;color:var(--gray-600);margin-top:4px}
+@media(max-width:768px){.pie-section{grid-template-columns:1fr}}
+
+/* anim */
+.fade-in{opacity:0;transform:translateY(20px);transition:opacity .6s,transform .6s}.fade-in.visible{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <div class="nav-logo"><span class="dot"></span>GAS × WingArc1st LLMO戦略</div>
+    <ul>
+      <li><a href="#summary">サマリー</a></li>
+      <li><a href="#detail">調査詳細</a></li>
+      <li><a href="#mining">マイニング</a></li>
+      <li><a href="#strategy">プロンプト戦略</a></li>
+      <li><a href="#prompts">対策プロンプト</a></li>
+      <li><a href="#pr">PR戦略</a></li>
+      <li><a href="#theme">4月テーマ</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+  <div class="container">
+    <div class="hero-label">MotionBoard × LLMO Consulting</div>
+    <h1>プロンプト仮説検証調査に基づく<br><span>戦略提案</span></h1>
+    <p>BIツール検討者300名のAI検索行動を分析し、MotionBoardがAI時代に選ばれるための情報設計戦略を提案します。</p>
+    <div class="hero-meta">
+      <span><strong>対象</strong> 300名</span>
+      <span><strong>期間</strong> 2026年3月26-27日</span>
+      <span><strong>課題軸</strong> 6カテゴリ</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SUMMARY ===== -->
+<section id="summary">
+  <div class="container">
+    <div class="section-label">01 — Overview</div>
+    <h2 class="section-title">調査結果サマリー</h2>
+    <p class="section-sub">従業員100名以上の企業でBIツールの導入検討・データ活用推進に関与する300名への調査から、6つの課題軸とAI検索行動の実態が明らかになりました。</p>
+
+    <div class="stat-grid fade-in">
+      <div class="stat-card"><div class="stat-val c-blue">58.6%</div><div class="stat-label">AI情報収集「増える」</div></div>
+      <div class="stat-card"><div class="stat-val c-navy">30.0%</div><div class="stat-label">課題1位：帳票連携</div></div>
+      <div class="stat-card"><div class="stat-val c-purple">52.9%</div><div class="stat-label">AI×BI 使い分け需要</div></div>
+      <div class="stat-card"><div class="stat-val c-red">57.1%</div><div class="stat-label">セキュリティ厳格企業向けBI</div></div>
+    </div>
+
+    <div class="chart-section fade-in">
+      <div class="chart-box">
+        <h3>Q1 BIツール・データ活用における課題</h3>
+        <div class="n-label">n=300 / 複数回答</div>
+        <canvas id="chartQ1"></canvas>
+      </div>
+      <div class="chart-box" style="display:flex;flex-direction:column;justify-content:center;gap:16px;padding:32px">
+        <h3 style="font-size:18px;margin-bottom:8px">調査概要</h3>
+        <p style="font-size:13px;color:var(--gray-600)"><strong>対象：</strong>BIツール検討者300名（従業員100名以上）</p>
+        <p style="font-size:13px;color:var(--gray-600)"><strong>期間：</strong>2026年3月26日〜27日</p>
+        <p style="font-size:13px;color:var(--gray-600)"><strong>設問：</strong>定量8問（SA/MA）+ 自由回答7問</p>
+        <p style="font-size:13px;color:var(--gray-600)"><strong>構造：</strong>Q1で課題選択 → 課題別にFA＋MAで深掘り</p>
+        <p style="font-size:13px;color:var(--gray-600)"><strong>課題軸：</strong>帳票連携 / AI代替判断 / 外資→国産 / IoT可視化 / 業務実行 / セキュリティ</p>
+      </div>
+    </div>
+
+    <div class="insight fade-in">課題は6軸に分散 → 単一メッセージではなく、課題軸別のプロンプト設計が必要</div>
+  </div>
+</section>
+
+<!-- ===== DETAIL ===== -->
+<section id="detail">
+  <div class="container">
+    <div class="section-label">02 — Survey Details</div>
+    <h2 class="section-title">設問別 詳細結果</h2>
+    <p class="section-sub">Q1で選択した課題別に、自由回答（FA）と選択式（MA）で深掘り。ユーザーの実際のプロンプト傾向が浮かび上がります。</p>
+
+    <!-- Q2/Q3 -->
+    <div class="detail-header fade-in"><div class="detail-num">1</div><h3>外資BI → 国産BI切替（Q2-Q3 / n=69）</h3></div>
+    <div class="chart-section fade-in">
+      <div class="chart-box"><h3>AIに聞きたいこと（MA）</h3><div class="n-label">n=69 / 複数回答</div><canvas id="chartQ3"></canvas></div>
+      <div class="fa-box"><div class="fa-box-header">Q2 自由回答（抜粋）</div>
+        <div class="fa-item">"セキュリティ強化のため、外資BIから国産BIへの切り替え・代替をしたいが、機能面やコスト面で優れた国産BIを探して"</div>
+        <div class="fa-item">"外資より国産のほうの優位性はなにか"</div>
+        <div class="fa-item">"外資から国産への無駄のない切り替え方法を考えてほしい"</div>
+        <div class="fa-item">"システムの移行が可能か。保守運用は。機能の差分は"</div>
+        <div class="fa-item">"国産でBIができるシステムのソリューションを教えて"</div>
+      </div>
+    </div>
+    <div class="insight fade-in">「国産BIおすすめ」が6割超 → MotionBoardが第一想起されるコンテンツ設計が最重要</div>
+
+    <!-- Q4/Q5 -->
+    <div class="detail-header fade-in"><div class="detail-num">2</div><h3>BIツールと帳票出力の連携（Q4-Q5 / n=90）</h3></div>
+    <div class="chart-section fade-in">
+      <div class="chart-box"><h3>AIに聞きたいこと（MA）</h3><div class="n-label">n=90 / 複数回答</div><canvas id="chartQ5"></canvas></div>
+      <div class="fa-box"><div class="fa-box-header">Q4 自由回答（抜粋）</div>
+        <div class="fa-item">"BIツールと帳票出力の連携を強化するにはどうすれば"</div>
+        <div class="fa-item">"帳票出力の連携を強化したい時何から手をつければ"</div>
+        <div class="fa-item">"課題をリストアップして、AIに取捨選択してもらいデータ効率化に繋げたい"</div>
+        <div class="fa-item">"サイロ化の対策"</div>
+        <div class="fa-item">"分析されたデータを、BIツールと帳票出力と連携させたい"</div>
+      </div>
+    </div>
+    <div class="insight fade-in">予実管理・PDF出力が各5割 → MotionBoardの帳票一体型機能がダイレクトに刺さる領域</div>
+
+    <!-- Q6/Q7 -->
+    <div class="detail-header fade-in"><div class="detail-num">3</div><h3>AIでBIを代替できるか（Q6-Q7 / n=85）</h3></div>
+    <div class="chart-section fade-in">
+      <div class="chart-box"><h3>AIに聞きたいこと（MA）</h3><div class="n-label">n=85 / 複数回答</div><canvas id="chartQ7"></canvas></div>
+      <div class="fa-box"><div class="fa-box-header">Q6 自由回答（抜粋）</div>
+        <div class="fa-item">"BIツールは、AIで代替できるか、判断する方法を知りたい"</div>
+        <div class="fa-item">"BIツールにAI機能を追加する場合のメリットを列挙して"</div>
+        <div class="fa-item">"aiでbiツールを代替できるのかソース付きで教えて"</div>
+        <div class="fa-item">"AIでBIツールを代替できるのか？どのようにして代替するのか？"</div>
+        <div class="fa-item">"BIツールの代わりにAIに切り替えたい。代替となるAIを紹介して"</div>
+      </div>
+    </div>
+    <div class="insight fade-in">「使い分け」が5割超 → 「AIとBIは競合ではなく共存」のメッセージが最も響く</div>
+
+    <!-- Q8/Q9 -->
+    <div class="detail-header fade-in"><div class="detail-num">4</div><h3>IoT・設備データのリアルタイム可視化（Q8-Q9 / n=66）</h3></div>
+    <div class="chart-section fade-in">
+      <div class="chart-box"><h3>AIに聞きたいこと（MA）</h3><div class="n-label">n=66 / 複数回答</div><canvas id="chartQ9"></canvas></div>
+      <div class="fa-box"><div class="fa-box-header">Q8 自由回答（抜粋）</div>
+        <div class="fa-item">"現場モニタでリアルタイム監視したい。最適なシステム構成案と技術スタックを提案して"</div>
+        <div class="fa-item">"AIで設備データをリアルタイムで把握できる商品を紹介して"</div>
+        <div class="fa-item">"IOTや設備データをリアルタイムで可視化したいときにどうしたら良いか"</div>
+        <div class="fa-item">"特定の仕様を提示して、何が具体的に可視化できるか教えて"</div>
+        <div class="fa-item">"設備の故障内容とメンテナンス頻度を正確に行いたい"</div>
+      </div>
+    </div>
+    <div class="insight fade-in">「設備異常検知」が最多 → 製造業の現場課題と直結。MotionBoardのIoT機能を前面に</div>
+
+    <!-- Q10/Q11 -->
+    <div class="detail-header fade-in"><div class="detail-num">5</div><h3>分析→業務実行のダッシュボード完結（Q10-Q11 / n=56）</h3></div>
+    <div class="chart-section fade-in">
+      <div class="chart-box"><h3>AIに聞きたいこと（MA）</h3><div class="n-label">n=56 / 複数回答</div><canvas id="chartQ11"></canvas></div>
+      <div class="fa-box"><div class="fa-box-header">Q10 自由回答（抜粋）</div>
+        <div class="fa-item">"分析結果を見て終わりではなく発注・通知・承認依頼まで完結させたい"</div>
+        <div class="fa-item">"設備の稼働進捗を把握したい。メンテナンス頻度を正確に把握したい"</div>
+        <div class="fa-item">"ダッシュボード上で完結させたい場合の良い選択を知りたい"</div>
+        <div class="fa-item">"分析から業務全般まで一貫して完結させるためのノウハウ"</div>
+        <div class="fa-item">"業務実行までダッシュボード上で完結させる方法を教えて"</div>
+      </div>
+    </div>
+    <div class="insight fade-in">「生産管理の代替」が4割 → BIの枠を超えた業務アプリ化ニーズ。新カテゴリ創出の好機</div>
+
+    <!-- Q12/Q13 -->
+    <div class="detail-header fade-in"><div class="detail-num">6</div><h3>セキュリティ・データ管理重視のBI選定（Q12-Q13 / n=42）</h3></div>
+    <div class="chart-section fade-in">
+      <div class="chart-box"><h3>AIに聞きたいこと（MA）</h3><div class="n-label">n=42 / 複数回答</div><canvas id="chartQ13"></canvas></div>
+      <div class="fa-box"><div class="fa-box-header">Q12 自由回答（抜粋）</div>
+        <div class="fa-item">"自社サーバーに置けて、海外に出ない誠実系BIを探しています"</div>
+        <div class="fa-item">"厳格なセキュリティ基準でBIツールを探している。構成案を提案して"</div>
+        <div class="fa-item">"VPN接続のセキュリティ脆弱性があるか判断したい"</div>
+        <div class="fa-item">"社内データのプライバシーをどのクラウドに保管できるか"</div>
+        <div class="fa-item">"自社データのセキュリティや管理場所を重視したBIを探している"</div>
+      </div>
+    </div>
+    <div class="insight fade-in">セキュリティ厳格企業向けBI 6割・AI時代のデータ基盤 5割超 → 国産・データ主権の訴求が強力</div>
+
+    <!-- Q14 -->
+    <div class="detail-header fade-in"><div class="detail-num">7</div><h3>その他にAIに聞きそうな質問（Q14 / 自由回答）</h3></div>
+    <div class="quotes-grid fade-in">
+      <div class="quote-card"><q>社内のデータが散らばりすぎて遺跡発掘レベル。全部まとめて可視化して</q><span class="quote-tag">データ統合</span></div>
+      <div class="quote-card"><q>属人化した作業をどのように自動化したらよいか？</q><span class="quote-tag">業務自動化</span></div>
+      <div class="quote-card"><q>セキュリティとクオリティを併せ持ったBIツールを教えて</q><span class="quote-tag">セキュリティ</span></div>
+      <div class="quote-card"><q>工場設備に関して適正なメンテナンス頻度を把握したい</q><span class="quote-tag">設備管理</span></div>
+      <div class="quote-card"><q>AとBのシステム差異から性能パラメータを分析し、グラフで比較可視化して</q><span class="quote-tag">比較分析</span></div>
+      <div class="quote-card"><q>BIツールはどの程度汎用性があるのか</q><span class="quote-tag">製品理解</span></div>
+      <div class="quote-card"><q>具体的な製品の値段やライセンスを教えて</q><span class="quote-tag">コスト</span></div>
+      <div class="quote-card"><q>データの可視化が優れているデータ活用ツールについて教えて</q><span class="quote-tag">ツール選定</span></div>
+    </div>
+
+    <!-- Q15 -->
+    <div class="detail-header fade-in"><div class="detail-num">8</div><h3>今後のAIチャットツール利用頻度（Q15 / n=300）</h3></div>
+    <div class="pie-section fade-in">
+      <div class="chart-box"><canvas id="chartQ15"></canvas></div>
+      <div class="pie-callouts">
+        <div class="pie-callout"><div class="big c-blue">58.6%</div><div class="label">「大幅に増える」+「やや増える」合計</div></div>
+        <div class="pie-callout"><div class="big" style="color:var(--gray-400)">6.7%</div><div class="label">「やや減る」+「利用しない」合計</div></div>
+      </div>
+    </div>
+    <div class="insight fade-in">AI情報収集の増加は不可逆 → 「AIに聞かれた時」にMotionBoardが出る情報設計は待ったなし</div>
+  </div>
+</section>
+
+<!-- ===== MINING ===== -->
+<section id="mining">
+  <div class="container">
+    <div class="section-label">03 — Text Mining</div>
+    <h2 class="section-title">自由回答マイニング結果</h2>
+    <p class="section-sub">全7問の自由回答（延べ702件）→ クリーニング → 有効回答206件をカテゴリ分類</p>
+
+    <div class="mining-grid fade-in">
+      <div class="mining-card"><div class="mining-num c-purple">45</div><div><h4>AI代替判断</h4><p>「使い分け方法」「BIのAI置換可否」「ソース付き回答」を求める傾向</p></div></div>
+      <div class="mining-card"><div class="mining-num c-teal">38</div><div><h4>帳票連携</h4><p>「サイロ化」「予実管理一元化」「PDF/Excel出力」が3大テーマ</p></div></div>
+      <div class="mining-card"><div class="mining-num c-blue">32</div><div><h4>外資→国産切替</h4><p>「セキュリティ」「コスト比較」「移行の容易さ」への関心が突出</p></div></div>
+      <div class="mining-card"><div class="mining-num c-green">28</div><div><h4>IoT可視化</h4><p>「リアルタイム監視」「設備異常検知」「システム構成提案」が具体的</p></div></div>
+      <div class="mining-card"><div class="mining-num c-amber">26</div><div><h4>業務実行</h4><p>「分析→発注・承認の一気通貫」「ノーコード」「ダッシュボード完結」</p></div></div>
+      <div class="mining-card"><div class="mining-num c-red">22</div><div><h4>セキュリティ</h4><p>「オンプレ運用」「データ主権」「脆弱性診断」への具体的懸念</p></div></div>
+    </div>
+    <div class="insight fade-in">自由回答のプロンプトは「〜を教えて」「〜できるか」型が主流 → AIが回答しやすい情報設計が必須</div>
+  </div>
+</section>
+
+<!-- ===== STRATEGY ===== -->
+<section id="strategy">
+  <div class="container">
+    <div class="section-label">04 — Prompt Strategy</div>
+    <h2 class="section-title">プロンプト設計戦略</h2>
+    <p class="section-sub">6つの課題軸 × AI検索プロンプト → MotionBoardが想起される情報設計</p>
+
+    <div class="strategy-grid fade-in">
+      <div class="strat-card prio-high"><span class="badge badge-high">★★★ 最優先</span><h4>帳票連携</h4><div class="strat-prompt">「予実管理と帳票を一つのツールで」<br>「BIからPDF/Excel出力」</div><p class="strat-action">帳票一体型BIとしてMotionBoardを想起させる</p></div>
+      <div class="strat-card prio-high"><span class="badge badge-high">★★★ 最優先</span><h4>AI代替判断</h4><div class="strat-prompt">「AIとBIの使い分け」<br>「ダッシュボード自動生成できるか」</div><p class="strat-action">AI活用BIとしての差別化ポジション確立</p></div>
+      <div class="strat-card prio-mid"><span class="badge badge-mid">★★☆ 優先</span><h4>外資→国産</h4><div class="strat-prompt">「国産BIおすすめ」<br>「Power BI以外のBI」</div><p class="strat-action">国産BI代表格としてのブランド言及獲得</p></div>
+      <div class="strat-card prio-mid"><span class="badge badge-mid">★★☆ 優先</span><h4>IoT可視化</h4><div class="strat-prompt">「設備異常リアルタイム検知」<br>「IoTダッシュボード化」</div><p class="strat-action">製造業向けリアルタイムBIの第一想起</p></div>
+      <div class="strat-card prio-low"><span class="badge badge-low">★☆☆ 中期</span><h4>業務実行</h4><div class="strat-prompt">「生産管理ダッシュボード」<br>「分析→業務実行 一気通貫」</div><p class="strat-action">BIの業務アプリ化という新文脈を創出</p></div>
+      <div class="strat-card prio-low"><span class="badge badge-low">★☆☆ 中期</span><h4>セキュリティ</h4><div class="strat-prompt">「セキュリティ厳格企業向けBI」<br>「オンプレ運用可能なBI」</div><p class="strat-action">データ主権・国産安心訴求で信頼獲得</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROMPT LIST ===== -->
+<section id="prompts">
+  <div class="container">
+    <div class="section-label">04-B — Target Prompts</div>
+    <h2 class="section-title">対策すべきプロンプト一覧</h2>
+    <p class="section-sub">調査データから逆算した「MotionBoardがAI回答に出るべき」プロンプト。これで検索された時に出なければ負け、という基準で優先度を設定。</p>
+
+    <!-- 最優先 -->
+    <div class="prompt-group fade-in">
+      <div class="prompt-group-header"><span class="prompt-group-badge" style="background:var(--mb-blue)">最優先</span><h3>検索Vol高 × MotionBoard適合度高</h3></div>
+      <div class="prompt-list">
+        <div class="prompt-row"><div class="prompt-text">「<span>予実管理と帳票を一つのツールで</span>実現できるBIツールはあるか」</div><div class="prompt-source">Q5 — 51.1%</div></div>
+        <div class="prompt-row"><div class="prompt-text">「ダッシュボードから<span>PDF・Excelを出力</span>できるBIツールを教えて」</div><div class="prompt-source">Q5 — 50.0%</div></div>
+        <div class="prompt-row"><div class="prompt-text">「<span>国産BIツール</span>でおすすめはどれか」</div><div class="prompt-source">Q3 — 62.3%</div></div>
+        <div class="prompt-row"><div class="prompt-text">「<span>Power BI以外</span>でおすすめのBIツールは」</div><div class="prompt-source">Q3 — 40.6%</div></div>
+        <div class="prompt-row"><div class="prompt-text">「<span>AIとBIツールの使い分け</span>を教えて」</div><div class="prompt-source">Q7 — 52.9%</div></div>
+        <div class="prompt-row"><div class="prompt-text">「AIで<span>ダッシュボードを自動生成</span>できるか」</div><div class="prompt-source">Q7 — 44.7%</div></div>
+      </div>
+    </div>
+
+    <!-- 優先 -->
+    <div class="prompt-group fade-in">
+      <div class="prompt-group-header"><span class="prompt-group-badge" style="background:var(--teal)">優先</span><h3>課題が明確で対策しやすい</h3></div>
+      <div class="prompt-list">
+        <div class="prompt-row"><div class="prompt-text">「<span>Tableau</span>と同等の機能を持つ<span>国産BIツール</span>はあるか」</div><div class="prompt-source">Q3 — 36.2%</div></div>
+        <div class="prompt-row"><div class="prompt-text">「<span>外資BI</span>と<span>国産BI</span>の違いを教えて」</div><div class="prompt-source">Q3 — 37.7%</div></div>
+        <div class="prompt-row"><div class="prompt-text">「<span>帳票文化</span>に合ったBIツールを探している」</div><div class="prompt-source">Q5 — 34.4%</div></div>
+        <div class="prompt-row"><div class="prompt-text">「<span>セキュリティに厳しい企業向け</span>のBIツールは」</div><div class="prompt-source">Q13 — 57.1%</div></div>
+        <div class="prompt-row"><div class="prompt-text">「<span>AI時代にデータ基盤</span>はどう変わるのか教えて」</div><div class="prompt-source">Q13 — 54.8%</div></div>
+        <div class="prompt-row"><div class="prompt-text">「AIがあれば<span>BIツールは不要</span>なのか」</div><div class="prompt-source">Q7 — 38.8%</div></div>
+      </div>
+    </div>
+
+    <!-- 中期 -->
+    <div class="prompt-group fade-in">
+      <div class="prompt-group-header"><span class="prompt-group-badge" style="background:var(--gray-600)">中期</span><h3>新文脈の創出が必要</h3></div>
+      <div class="prompt-list">
+        <div class="prompt-row"><div class="prompt-text">「<span>設備異常をリアルタイムで検知・通知</span>できるBIツールは」</div><div class="prompt-source">Q9 — 45.5%</div></div>
+        <div class="prompt-row"><div class="prompt-text">「<span>IoTデータ</span>をリアルタイムで<span>ダッシュボード化</span>したい」</div><div class="prompt-source">Q9 — 40.9%</div></div>
+        <div class="prompt-row"><div class="prompt-text">「<span>生産管理システム</span>の代わりになるダッシュボードは」</div><div class="prompt-source">Q11 — 39.3%</div></div>
+        <div class="prompt-row"><div class="prompt-text">「BIツールで<span>簡易的な業務アプリ</span>を作りたい」</div><div class="prompt-source">Q11 — 33.9%</div></div>
+        <div class="prompt-row"><div class="prompt-text">「<span>Power BI</span>をやめて<span>AIで内製</span>すべきか」</div><div class="prompt-source">Q7 — 29.4%</div></div>
+        <div class="prompt-row"><div class="prompt-text">「<span>オンプレミス</span>で運用できるBIツールのおすすめは」</div><div class="prompt-source">Q13 — 31.0%</div></div>
+        <div class="prompt-row"><div class="prompt-text">「<span>データの真正性</span>を担保しつつAIを活用する方法は」</div><div class="prompt-source">Q13 — 38.1%</div></div>
+      </div>
+    </div>
+
+    <!-- 生プロンプト -->
+    <div class="prompt-group fade-in">
+      <div class="prompt-raw">
+        <div class="prompt-raw-title">📝 自由回答から拾った"生プロンプト" — ユーザーがAIに打ち込むと回答した実文面</div>
+        <q>外資BIから国産BIへの切り替え・代替をしたいが、機能面やコスト面で優れた国産BIを探して</q>
+        <q>BIツールと帳票出力の連携を強化したい時何から手をつければいい？</q>
+        <q>aiでbiツールを代替できるのかソース付きで教えて</q>
+        <q>現場のモニタでリアルタイムで監視したいために、最適なシステム構成案と技術スタックを提案してほしい</q>
+        <q>分析結果を見て終わりではなく、発注・通知・承認依頼まで完結させたい</q>
+        <q>自社サーバーに置けて、海外に出ない誠実系BIを探しています</q>
+      </div>
+    </div>
+
+    <div class="insight fade-in">最優先の6本は「このプロンプトでMotionBoardが出ないと負け」というベンチマーク。初期診断ではまずこの6本で自社・Tableau・Power BIの出方を横並び検証する</div>
+  </div>
+</section>
+
+<!-- ===== PR ===== -->
+<section id="pr">
+  <div class="container">
+    <div class="section-label">05 — PR & Research</div>
+    <h2 class="section-title">PR・調査戦略方針</h2>
+    <p class="section-sub">プレスリリース × サイテーション × 継続調査の3本柱で、MotionBoardのAI言及を最大化</p>
+
+    <div class="pillars fade-in">
+      <div class="pillar"><h4><span class="icon">📢</span>プレスリリース展開</h4><ul>
+        <li>仮説検証調査をベースにリリース配信</li><li>「約6割がAI情報収集増加」をメインフック</li><li>業界メディアへの個別ピッチ</li><li>調査データの二次利用許可で掲載促進</li></ul></div>
+      <div class="pillar"><h4><span class="icon">🔍</span>サイテーション施策</h4><ul>
+        <li>AI回答内でMotionBoard言及の情報設計</li><li>比較記事・FAQ・用語集コンテンツ拡充</li><li>第三者メディアのレビュー記事獲得</li><li>技術ブログのAIクロール最適化</li></ul></div>
+      <div class="pillar"><h4><span class="icon">📊</span>継続的PR調査</h4><ul>
+        <li>月次テーマ調査でニュースバリュー継続創出</li><li>競合動向連動のタイムリー発信</li><li>調査→リリース→記事化パイプライン自動化</li><li>AI言及モニタリングで成果可視化</li></ul></div>
+    </div>
+
+    <h3 style="font-size:20px;font-weight:700;margin-bottom:20px">調査ロードマップ</h3>
+    <div class="roadmap fade-in">
+      <div class="roadmap-item"><div class="roadmap-month">3月</div><div class="roadmap-badge bg-green">完了</div><div class="roadmap-task">プロンプト仮説検証調査（本調査）</div><div class="roadmap-detail">6課題軸のプロンプト傾向把握</div></div>
+      <div class="roadmap-item"><div class="roadmap-month">4月</div><div class="roadmap-badge bg-blue">実施</div><div class="roadmap-task">AI時代のBI選定基準調査</div><div class="roadmap-detail">「なぜBIが必要か」の判断軸を可視化</div></div>
+      <div class="roadmap-item"><div class="roadmap-month">5月</div><div class="roadmap-badge bg-gray">計画</div><div class="roadmap-task">製造業DX × BI活用実態調査</div><div class="roadmap-detail">IoT・設備可視化の業界特化データ取得</div></div>
+      <div class="roadmap-item"><div class="roadmap-month">6月</div><div class="roadmap-badge bg-gray">計画</div><div class="roadmap-task">BIツール乗り換え実態・満足度調査</div><div class="roadmap-detail">外資→国産の切替事例・障壁を定量化</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== THEME ===== -->
+<section id="theme">
+  <div class="container">
+    <div class="section-label">06 — April Theme</div>
+    <h2 class="section-title">4月調査テーマ案</h2>
+    <p class="section-sub">調査で最もインパクトのあった「AI×BI使い分け」を深掘りし、カウンターナラティブを構築</p>
+
+    <div class="theme-main fade-in">
+      <span class="rec-badge">推奨テーマ</span>
+      <h4>テーマA：AI時代のBI選定基準調査 — BIは「不要」か「進化」か</h4>
+      <dl class="theme-grid">
+        <dt>狙い</dt><dd>「AIがあればBIは不要」という認識に対し、AI×BIの最適解を提示。MotionBoardの存在価値をAI文脈で再定義</dd>
+        <dt>対象</dt><dd>BIツール導入検討者 + AI活用推進担当者 500名（従業員300名以上）</dd>
+        <dt>主要設問</dt><dd>①AI単体でBIを代替した経験 ②AI×BIの使い分け基準 ③BI選定時のAI連携重視度 ④内製 vs SaaS vs 国産の判断軸</dd>
+        <dt>PR価値</dt><dd>「AI時代でもBIは不要ではない」のカウンターナラティブでメディア掲載を狙う</dd>
+      </dl>
+    </div>
+
+    <div class="theme-alts fade-in">
+      <div class="theme-alt"><h4 style="color:var(--navy)">テーマB（代替案）</h4><p><strong>製造業×BI活用実態調査</strong><br>IoT・設備データ可視化の現在地。製造業のDX文脈でMotionBoardのIoT強みを訴求。業界メディアへの掲載力が高い</p></div>
+      <div class="theme-alt"><h4 style="color:var(--amber)">テーマC（代替案）</h4><p><strong>BIツール乗り換え障壁調査</strong><br>外資BIユーザーの本音と切替コスト。「Power BI/Tableau→国産」の切替事例・障壁を定量化。競合プロンプト対策として直接的</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p style="margin-bottom:8px"><strong style="color:#fff">Confidential</strong> — ウイングアーク1st様向け提案資料</p>
+    <p>&copy; 2026 GAS Inc. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+Chart.defaults.font.family = "'Noto Sans JP','DM Sans',sans-serif";
+Chart.defaults.font.size = 13;
+Chart.defaults.color = '#475569';
+const MB = '#3C7BE3';
+
+function hBar(id, labels, data, color) {
+  new Chart(document.getElementById(id), {
+    type:'bar', data:{labels, datasets:[{data, backgroundColor:color||MB, borderRadius:4, barPercentage:.7}]},
+    options:{indexAxis:'y', responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>c.raw+'%'}}},
+      scales:{x:{grid:{color:'#E2E8F0'},ticks:{callback:v=>v+'%'}}, y:{grid:{display:false}}}}
+  });
+}
+
+hBar('chartQ1',['帳票連携','AI代替判断','外資→国産','IoT可視化','業務実行','セキュリティ','特にない','わからない'],[30.0,28.3,23.0,22.0,18.7,14.0,13.3,9.3]);
+hBar('chartQ3',['国産BIおすすめ','Power BI以外のBI','外資vs国産の違い','Tableau同等の国産BI','日本語完全対応BI','日本企業向け安心BI','kintone比較'],[62.3,40.6,37.7,36.2,36.2,18.8,13.0],'#2563EB');
+hBar('chartQ5',['予実管理+帳票一体化','PDF/Excel出力','BI+帳票一体型ツール','帳票文化に合うBI','基幹→BI→帳票','Excelレポート効率化','経営ダッシュ帳票一元化'],[51.1,50.0,36.7,34.4,27.8,18.9,13.3],'#0D9488');
+hBar('chartQ7',['AIとBIの使い分け','ダッシュボード自動生成','AIがあればBI不要か','生産管理をAIで作れるか','Power BI→AI内製すべきか','AI時代のBI導入意味','AI+BI組合せ方法'],[52.9,44.7,38.8,35.3,29.4,16.5,11.8],'#8B5CF6');
+hBar('chartQ9',['設備異常リアルタイム検知','IoTダッシュボード化','生産ライン稼働率可視化','PLCデータ自動表示','地図上データ可視化','現場→経営層共有','ノーコードIoTダッシュ'],[45.5,40.9,37.9,30.3,28.8,25.8,18.2],'#059669');
+hBar('chartQ11',['生産管理代替ダッシュ','簡易業務アプリ作成','分析→業務一気通貫','データ入力・承認','ノーコードBI','入力+分析両立BI','現場担当でも作れるBI'],[39.3,33.9,32.1,32.1,28.6,21.4,10.7],'#F59E0B');
+hBar('chartQ13',['セキュリティ厳格企業向けBI','AI時代のデータ基盤変化','データ外部非公開でBI活用','データ真正性+AI活用','オンプレ運用BI','データ主権+クラウドBI','AI非依存データ基盤'],[57.1,54.8,45.2,38.1,31.0,23.8,16.7],'#EF4444');
+
+new Chart(document.getElementById('chartQ15'),{
+  type:'doughnut',
+  data:{labels:['大幅に増える','やや増える','変わらない','やや減る','利用しない','わからない'],
+    datasets:[{data:[26.3,32.3,27.0,3.7,3.0,7.7],backgroundColor:[MB,'#6B9BED','#94A3B8','#F59E0B','#EF4444','#E2E8F0'],borderWidth:0}]},
+  options:{responsive:true,cutout:'55%',plugins:{legend:{position:'bottom',labels:{padding:16,usePointStyle:true}},tooltip:{callbacks:{label:c=>c.label+': '+c.raw+'%'}}}}
+});
+
+// scroll animation
+const obs = new IntersectionObserver(entries => {entries.forEach(e => {if(e.isIntersecting) e.target.classList.add('visible')})}, {threshold:.15});
+document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
