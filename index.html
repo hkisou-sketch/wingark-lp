@@ -71,7 +71,7 @@ section:nth-child(even){background:var(--gray-50)}
 /* ===== CHART SECTION ===== */
 .chart-section{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:48px;align-items:start}
 .chart-box{background:#fff;border-radius:var(--radius);padding:24px;border:1px solid var(--gray-200)}
-.chart-box h3{font-size:18px;font-weight:700;margin-bottom:4px}
+.chart-box h3{font-size:14px;font-weight:700;margin-bottom:4px;line-height:1.5}
 .chart-box .n-label{font-size:14px;color:var(--gray-400);margin-bottom:16px}
 .chart-box canvas{width:100%!important;max-height:340px}
 .fa-box{background:#fff;border-radius:var(--radius);border:1px solid var(--gray-200);overflow:hidden}
@@ -195,7 +195,7 @@ footer{background:var(--navy);color:var(--gray-400);padding:40px 0;text-align:ce
 
 <nav>
   <div class="container">
-    <div class="nav-logo"><span class="dot"></span>GAS × WingArc1st LLMO戦略</div>
+    <div class="nav-logo"><span class="dot"></span>LLMO戦略提案</div>
     <ul>
       <li><a href="#summary">サマリー</a></li>
       <li><a href="#detail">調査詳細</a></li>
@@ -238,7 +238,7 @@ footer{background:var(--navy);color:var(--gray-400);padding:40px 0;text-align:ce
 
     <div class="chart-section fade-in">
       <div class="chart-box">
-        <h3>Q1 BIツール・データ活用における課題</h3>
+        <h3>Q1. あなたがBIツール・データ活用について、現在「解決したい」「どうにかしたい」と感じている課題を教えてください。（上位3つまで回答可）</h3>
         <div class="n-label">n=300 / 複数回答</div>
         <canvas id="chartQ1"></canvas>
       </div>
@@ -264,9 +264,9 @@ footer{background:var(--navy);color:var(--gray-400);padding:40px 0;text-align:ce
     <p class="section-sub">Q1で選択した課題別に、自由回答（FA）と選択式（MA）で深掘り。ユーザーの実際のプロンプト傾向が浮かび上がります。</p>
 
     <!-- Q2/Q3 -->
-    <div class="detail-header fade-in"><div class="detail-num">1</div><h3>外資BI → 国産BI切替（Q2-Q3 / n=69）</h3></div>
+    <div class="detail-header fade-in"><div class="detail-num">1</div><h3>Q2-Q3. 外資BIから国産BIへの切り替え・代替</h3></div>
     <div class="chart-section fade-in">
-      <div class="chart-box"><h3>AIに聞きたいこと（MA）</h3><div class="n-label">n=69 / 複数回答</div><canvas id="chartQ3"></canvas></div>
+      <div class="chart-box"><h3>Q3. Q1で「外資BIから国産BIへの切り替え・代替を検討している」と回答した方にお聞きします。この課題についてAIチャットツールに相談するとしたら、以下のうちあなたのイメージに近いものを教えてください。（複数回答）</h3><div class="n-label">n=69 / 複数回答</div><canvas id="chartQ3"></canvas></div>
       <div class="fa-box"><div class="fa-box-header">Q2 自由回答（抜粋）</div>
         <div class="fa-item">"セキュリティ強化のため、外資BIから国産BIへの切り替え・代替をしたいが、機能面やコスト面で優れた国産BIを探して"</div>
         <div class="fa-item">"外資より国産のほうの優位性はなにか"</div>
@@ -278,9 +278,9 @@ footer{background:var(--navy);color:var(--gray-400);padding:40px 0;text-align:ce
     <div class="insight fade-in">「国産BIおすすめ」が6割超 → MotionBoardが第一想起されるコンテンツ設計が最重要</div>
 
     <!-- Q4/Q5 -->
-    <div class="detail-header fade-in"><div class="detail-num">2</div><h3>BIツールと帳票出力の連携（Q4-Q5 / n=90）</h3></div>
+    <div class="detail-header fade-in"><div class="detail-num">2</div><h3>Q4-Q5. BIツールと帳票出力の連携強化</h3></div>
     <div class="chart-section fade-in">
-      <div class="chart-box"><h3>AIに聞きたいこと（MA）</h3><div class="n-label">n=90 / 複数回答</div><canvas id="chartQ5"></canvas></div>
+      <div class="chart-box"><h3>Q5. Q1で「データが分断されており、BIツールと帳票出力の連携を強化したい」と回答した方にお聞きします。この課題についてAIチャットツールに相談するとしたら、以下のうちあなたのイメージに近いものを教えてください。（複数回答）</h3><div class="n-label">n=90 / 複数回答</div><canvas id="chartQ5"></canvas></div>
       <div class="fa-box"><div class="fa-box-header">Q4 自由回答（抜粋）</div>
         <div class="fa-item">"BIツールと帳票出力の連携を強化するにはどうすれば"</div>
         <div class="fa-item">"帳票出力の連携を強化したい時何から手をつければ"</div>
@@ -292,9 +292,9 @@ footer{background:var(--navy);color:var(--gray-400);padding:40px 0;text-align:ce
     <div class="insight fade-in">予実管理・PDF出力が各5割 → MotionBoardの帳票一体型機能がダイレクトに刺さる領域</div>
 
     <!-- Q6/Q7 -->
-    <div class="detail-header fade-in"><div class="detail-num">3</div><h3>AIでBIを代替できるか（Q6-Q7 / n=85）</h3></div>
+    <div class="detail-header fade-in"><div class="detail-num">3</div><h3>Q6-Q7. AIでBIツールを代替できるか</h3></div>
     <div class="chart-section fade-in">
-      <div class="chart-box"><h3>AIに聞きたいこと（MA）</h3><div class="n-label">n=85 / 複数回答</div><canvas id="chartQ7"></canvas></div>
+      <div class="chart-box"><h3>Q7. Q1で「AIでBIツールを代替できるのか判断がつかない」と回答した方にお聞きします。この課題についてAIチャットツールに相談するとしたら、以下のうちあなたのイメージに近いものを教えてください。（複数回答）</h3><div class="n-label">n=85 / 複数回答</div><canvas id="chartQ7"></canvas></div>
       <div class="fa-box"><div class="fa-box-header">Q6 自由回答（抜粋）</div>
         <div class="fa-item">"BIツールは、AIで代替できるか、判断する方法を知りたい"</div>
         <div class="fa-item">"BIツールにAI機能を追加する場合のメリットを列挙して"</div>
@@ -306,9 +306,9 @@ footer{background:var(--navy);color:var(--gray-400);padding:40px 0;text-align:ce
     <div class="insight fade-in">「使い分け」が5割超 → 「AIとBIは競合ではなく共存」のメッセージが最も響く</div>
 
     <!-- Q8/Q9 -->
-    <div class="detail-header fade-in"><div class="detail-num">4</div><h3>IoT・設備データのリアルタイム可視化（Q8-Q9 / n=66）</h3></div>
+    <div class="detail-header fade-in"><div class="detail-num">4</div><h3>Q8-Q9. IoT・設備データのリアルタイム可視化</h3></div>
     <div class="chart-section fade-in">
-      <div class="chart-box"><h3>AIに聞きたいこと（MA）</h3><div class="n-label">n=66 / 複数回答</div><canvas id="chartQ9"></canvas></div>
+      <div class="chart-box"><h3>Q9. Q1で「IoT・設備データをリアルタイムで可視化したい」と回答した方にお聞きします。この課題についてAIチャットツールに相談するとしたら、以下のうちあなたのイメージに近いものを教えてください。（複数回答）</h3><div class="n-label">n=66 / 複数回答</div><canvas id="chartQ9"></canvas></div>
       <div class="fa-box"><div class="fa-box-header">Q8 自由回答（抜粋）</div>
         <div class="fa-item">"現場モニタでリアルタイム監視したい。最適なシステム構成案と技術スタックを提案して"</div>
         <div class="fa-item">"AIで設備データをリアルタイムで把握できる商品を紹介して"</div>
@@ -320,9 +320,9 @@ footer{background:var(--navy);color:var(--gray-400);padding:40px 0;text-align:ce
     <div class="insight fade-in">「設備異常検知」が最多 → 製造業の現場課題と直結。MotionBoardのIoT機能を前面に</div>
 
     <!-- Q10/Q11 -->
-    <div class="detail-header fade-in"><div class="detail-num">5</div><h3>分析→業務実行のダッシュボード完結（Q10-Q11 / n=56）</h3></div>
+    <div class="detail-header fade-in"><div class="detail-num">5</div><h3>Q10-Q11. 分析だけでなく業務実行までダッシュボード上で完結</h3></div>
     <div class="chart-section fade-in">
-      <div class="chart-box"><h3>AIに聞きたいこと（MA）</h3><div class="n-label">n=56 / 複数回答</div><canvas id="chartQ11"></canvas></div>
+      <div class="chart-box"><h3>Q11. Q1で「分析だけでなく業務実行までダッシュボード上で完結させたい」と回答した方にお聞きします。この課題についてAIチャットツールに相談するとしたら、以下のうちあなたのイメージに近いものを教えてください。（複数回答）</h3><div class="n-label">n=56 / 複数回答</div><canvas id="chartQ11"></canvas></div>
       <div class="fa-box"><div class="fa-box-header">Q10 自由回答（抜粋）</div>
         <div class="fa-item">"分析結果を見て終わりではなく発注・通知・承認依頼まで完結させたい"</div>
         <div class="fa-item">"設備の稼働進捗を把握したい。メンテナンス頻度を正確に把握したい"</div>
@@ -334,9 +334,9 @@ footer{background:var(--navy);color:var(--gray-400);padding:40px 0;text-align:ce
     <div class="insight fade-in">「生産管理の代替」が4割 → BIの枠を超えた業務アプリ化ニーズ。新カテゴリ創出の好機</div>
 
     <!-- Q12/Q13 -->
-    <div class="detail-header fade-in"><div class="detail-num">6</div><h3>セキュリティ・データ管理重視のBI選定（Q12-Q13 / n=42）</h3></div>
+    <div class="detail-header fade-in"><div class="detail-num">6</div><h3>Q12-Q13. 自社データのセキュリティ・管理場所を重視したBI選定</h3></div>
     <div class="chart-section fade-in">
-      <div class="chart-box"><h3>AIに聞きたいこと（MA）</h3><div class="n-label">n=42 / 複数回答</div><canvas id="chartQ13"></canvas></div>
+      <div class="chart-box"><h3>Q13. Q1で「自社データのセキュリティ・管理場所を重視したBIを探している」と回答した方にお聞きします。この課題についてAIチャットツールに相談するとしたら、以下のうちあなたのイメージに近いものを教えてください。（複数回答）</h3><div class="n-label">n=42 / 複数回答</div><canvas id="chartQ13"></canvas></div>
       <div class="fa-box"><div class="fa-box-header">Q12 自由回答（抜粋）</div>
         <div class="fa-item">"自社サーバーに置けて、海外に出ない誠実系BIを探しています"</div>
         <div class="fa-item">"厳格なセキュリティ基準でBIツールを探している。構成案を提案して"</div>
@@ -348,7 +348,7 @@ footer{background:var(--navy);color:var(--gray-400);padding:40px 0;text-align:ce
     <div class="insight fade-in">セキュリティ厳格企業向けBI 6割・AI時代のデータ基盤 5割超 → 国産・データ主権の訴求が強力</div>
 
     <!-- Q14 -->
-    <div class="detail-header fade-in"><div class="detail-num">7</div><h3>その他にAIに聞きそうな質問（Q14 / 自由回答）</h3></div>
+    <div class="detail-header fade-in"><div class="detail-num">7</div><h3>Q14. これまでの選択肢以外に、BIツールやデータ活用についてAIチャットツールに聞きそうな質問があれば、自由にお書きください。（自由回答）</h3></div>
     <div class="quotes-grid fade-in">
       <div class="quote-card"><q>社内のデータが散らばりすぎて遺跡発掘レベル。全部まとめて可視化して</q><span class="quote-tag">データ統合</span></div>
       <div class="quote-card"><q>属人化した作業をどのように自動化したらよいか？</q><span class="quote-tag">業務自動化</span></div>
@@ -361,7 +361,7 @@ footer{background:var(--navy);color:var(--gray-400);padding:40px 0;text-align:ce
     </div>
 
     <!-- Q15 -->
-    <div class="detail-header fade-in"><div class="detail-num">8</div><h3>今後のAIチャットツール利用頻度（Q15 / n=300）</h3></div>
+    <div class="detail-header fade-in"><div class="detail-num">8</div><h3>Q15. BIツールの情報収集において、今後AIチャットツール（ChatGPT・Gemini等）の利用頻度はどうなると思いますか。</h3></div>
     <div class="pie-section fade-in">
       <div class="chart-box"><canvas id="chartQ15"></canvas></div>
       <div class="pie-callouts">
@@ -512,7 +512,7 @@ footer{background:var(--navy);color:var(--gray-400);padding:40px 0;text-align:ce
       <h4>テーマA：AI時代のBI選定基準調査 — BIは「不要」か「進化」か</h4>
       <dl class="theme-grid">
         <dt>狙い</dt><dd>「AIがあればBIは不要」という認識に対し、AI×BIの最適解を提示。MotionBoardの存在価値をAI文脈で再定義</dd>
-        <dt>対象</dt><dd>BIツール導入検討者 + AI活用推進担当者 500名（従業員300名以上）</dd>
+        <dt>対象</dt><dd>BIツール導入検討者 + AI活用推進担当者 100名（従業員100名以上）</dd>
         <dt>主要設問</dt><dd>①AI単体でBIを代替した経験 ②AI×BIの使い分け基準 ③BI選定時のAI連携重視度 ④内製 vs SaaS vs 国産の判断軸</dd>
         <dt>PR価値</dt><dd>「AI時代でもBIは不要ではない」のカウンターナラティブでメディア掲載を狙う</dd>
       </dl>
@@ -547,17 +547,80 @@ function hBar(id, labels, data, color) {
   });
 }
 
-hBar('chartQ1',['帳票連携','AI代替判断','外資→国産','IoT可視化','業務実行','セキュリティ','特にない','わからない'],[30.0,28.3,23.0,22.0,18.7,14.0,13.3,9.3]);
-hBar('chartQ3',['国産BIおすすめ','Power BI以外のBI','外資vs国産の違い','Tableau同等の国産BI','日本語完全対応BI','日本企業向け安心BI','kintone比較'],[62.3,40.6,37.7,36.2,36.2,18.8,13.0],'#2563EB');
-hBar('chartQ5',['予実管理+帳票一体化','PDF/Excel出力','BI+帳票一体型ツール','帳票文化に合うBI','基幹→BI→帳票','Excelレポート効率化','経営ダッシュ帳票一元化'],[51.1,50.0,36.7,34.4,27.8,18.9,13.3],'#0D9488');
-hBar('chartQ7',['AIとBIの使い分け','ダッシュボード自動生成','AIがあればBI不要か','生産管理をAIで作れるか','Power BI→AI内製すべきか','AI時代のBI導入意味','AI+BI組合せ方法'],[52.9,44.7,38.8,35.3,29.4,16.5,11.8],'#8B5CF6');
-hBar('chartQ9',['設備異常リアルタイム検知','IoTダッシュボード化','生産ライン稼働率可視化','PLCデータ自動表示','地図上データ可視化','現場→経営層共有','ノーコードIoTダッシュ'],[45.5,40.9,37.9,30.3,28.8,25.8,18.2],'#059669');
-hBar('chartQ11',['生産管理代替ダッシュ','簡易業務アプリ作成','分析→業務一気通貫','データ入力・承認','ノーコードBI','入力+分析両立BI','現場担当でも作れるBI'],[39.3,33.9,32.1,32.1,28.6,21.4,10.7],'#F59E0B');
-hBar('chartQ13',['セキュリティ厳格企業向けBI','AI時代のデータ基盤変化','データ外部非公開でBI活用','データ真正性+AI活用','オンプレ運用BI','データ主権+クラウドBI','AI非依存データ基盤'],[57.1,54.8,45.2,38.1,31.0,23.8,16.7],'#EF4444');
+hBar('chartQ1',[
+'データが分断されており、BIツールと帳票出力の連携を強化したい',
+'AIでBIツールを代替できるのか判断がつかない',
+'外資BIから国産BIへの切り替え・代替を検討している',
+'IoT・設備データをリアルタイムで可視化したい',
+'分析だけでなく業務実行までダッシュボード上で完結させたい',
+'自社データのセキュリティ・管理場所を重視したBIを探している',
+'特にない',
+'わからない/答えられない'
+],[30.0,28.3,23.0,22.0,18.7,14.0,13.3,9.3]);
+
+hBar('chartQ3',[
+'国産BIツールでおすすめはどれか',
+'Power BI以外でおすすめのBIツールは',
+'外資BIと国産BIの違いを教えて',
+'Tableauと同等の国産BIツールはあるか',
+'日本語完全対応のBIツールを教えて',
+'日本企業でも安心して使えるBIツールは',
+'kintoneと比較して効率化できるツールは'
+],[62.3,40.6,37.7,36.2,36.2,18.8,13.0],'#2563EB');
+
+hBar('chartQ5',[
+'予実管理と帳票を一つのツールで実現したい',
+'ダッシュボードからPDF・Excelを出力したい',
+'BIと帳票出力が一体型のツールはあるか',
+'帳票文化に合ったBIツールを探している',
+'基幹データをBIで可視化しそのまま帳票にしたい',
+'Excelレポート集計を効率化できるBIは',
+'経営ダッシュボードと帳票を一元化したい'
+],[51.1,50.0,36.7,34.4,27.8,18.9,13.3],'#0D9488');
+
+hBar('chartQ7',[
+'AIとBIツールの使い分けを教えて',
+'AIで（データ分析）ダッシュボードを自動生成できるか',
+'AIがあればBIツールは不要か教えて',
+'生産管理のダッシュボードをAIで作れるか',
+'Power BIをやめてAIで内製すべきか',
+'AI時代にBIツールを導入する意味はあるか',
+'BIツールとAIを組み合わせる方法を教えて'
+],[52.9,44.7,38.8,35.3,29.4,16.5,11.8],'#8B5CF6');
+
+hBar('chartQ9',[
+'設備異常をリアルタイムで検知・通知したい',
+'IoTデータをリアルタイムでダッシュボード化したい',
+'生産ラインの稼働率をリアルタイムで可視化したい',
+'PLCのデータを自動でダッシュボードに表示したい',
+'地図上にデータを可視化できるBIツールは',
+'現場データをリアルタイムで経営層と共有したい',
+'ノーコードでIoTダッシュボードを作りたい'
+],[45.5,40.9,37.9,30.3,28.8,25.8,18.2],'#059669');
+
+hBar('chartQ11',[
+'生産管理システムの代わりになるダッシュボードは',
+'BIツールで簡易的な業務アプリを作りたい',
+'分析から業務実行まで一気通貫のBIツールは',
+'ダッシュボード上でデータ入力や承認がしたい',
+'ノーコードでダッシュボードを作れるBIは',
+'入力機能と分析機能を両立させたBIツールは',
+'現場担当者でも作れるBIツールを探している'
+],[39.3,33.9,32.1,32.1,28.6,21.4,10.7],'#F59E0B');
+
+hBar('chartQ13',[
+'セキュリティに厳しい企業向けのBIツールは',
+'AI時代にデータ基盤はどう変わるのか教えて',
+'自社データを外部に出さずBIで可視化したい',
+'データの真正性を担保しつつAIを活用する方法は',
+'オンプレミスで運用できるBIツールのおすすめは',
+'データ主権を守りつつクラウドBIを使う方法は',
+'AIに依存しないデータ活用基盤を作りたい'
+],[57.1,54.8,45.2,38.1,31.0,23.8,16.7],'#EF4444');
 
 new Chart(document.getElementById('chartQ15'),{
   type:'doughnut',
-  data:{labels:['大幅に増える','やや増える','変わらない','やや減る','利用しない','わからない'],
+  data:{labels:['大幅に増えると思う','やや増えると思う','現状と変わらないと思う','やや減ると思う','AIチャットツールは利用しないと思う','わからない/答えられない'],
     datasets:[{data:[26.3,32.3,27.0,3.7,3.0,7.7],backgroundColor:[MB,'#6B9BED','#94A3B8','#F59E0B','#EF4444','#E2E8F0'],borderWidth:0}]},
   options:{responsive:true,cutout:'55%',plugins:{legend:{position:'bottom',labels:{padding:16,usePointStyle:true}},tooltip:{callbacks:{label:c=>c.label+': '+c.raw+'%'}}}}
 });
