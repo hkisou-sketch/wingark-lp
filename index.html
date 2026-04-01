@@ -632,7 +632,7 @@ new Chart(document.getElementById('chartQ15'),{
   type:'doughnut',
   data:{labels:['大幅に増えると思う','やや増えると思う','現状と変わらないと思う','やや減ると思う','AIチャットツールは利用しないと思う','わからない/答えられない'],
     datasets:[{data:[26.3,32.3,27.0,3.7,3.0,7.7],backgroundColor:[MB,'#6B9BED','#94A3B8','#F59E0B','#EF4444','#E2E8F0'],borderWidth:0}]},
-  options:{responsive:true,cutout:'55%',plugins:{legend:{position:'bottom',labels:{padding:16,usePointStyle:true}},tooltip:{callbacks:{label:c=>c.label+': '+c.raw+'%'}}}}
+  options:{responsive:true,maintainAspectRatio:true,aspectRatio:1,cutout:'55%',plugins:{legend:{position:'bottom',labels:{padding:16,usePointStyle:true}},tooltip:{callbacks:{label:c=>c.label+': '+c.raw+'%'}}}}
 });
 
 // scroll animation
