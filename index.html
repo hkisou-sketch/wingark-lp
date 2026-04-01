@@ -69,11 +69,14 @@ section:nth-child(even){background:var(--gray-50)}
 .c-blue{color:var(--mb-blue)}.c-navy{color:var(--navy)}.c-purple{color:var(--purple)}.c-red{color:var(--red)}.c-teal{color:var(--teal)}.c-green{color:var(--green)}.c-amber{color:var(--amber)}
 
 /* ===== CHART SECTION ===== */
-.chart-section{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:48px;align-items:start}
+.chart-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -24px 48px;padding:0 24px;scrollbar-width:thin;scrollbar-color:var(--mb-blue) var(--gray-100);position:relative}
+.chart-scroll::-webkit-scrollbar{height:6px}.chart-scroll::-webkit-scrollbar-track{background:var(--gray-100);border-radius:3px}.chart-scroll::-webkit-scrollbar-thumb{background:var(--mb-blue);border-radius:3px}
+.chart-scroll::after{content:'← スクロール →';position:sticky;right:0;bottom:0;display:block;text-align:right;font-size:11px;color:var(--gray-400);padding:6px 0 0;pointer-events:none}
+.chart-section{display:grid;grid-template-columns:820px 380px;gap:32px;align-items:start;min-width:1260px}
 .chart-box{background:#fff;border-radius:var(--radius);padding:24px;border:1px solid var(--gray-200)}
 .chart-box h3{font-size:14px;font-weight:700;margin-bottom:4px;line-height:1.5}
 .chart-box .n-label{font-size:14px;color:var(--gray-400);margin-bottom:16px}
-.chart-box canvas{width:100%!important;max-height:340px}
+.chart-box canvas{width:100%!important;height:380px!important}
 .fa-box{background:#fff;border-radius:var(--radius);border:1px solid var(--gray-200);overflow:hidden}
 .fa-box-header{background:var(--navy);color:#fff;padding:14px 20px;font-size:16px;font-weight:700}
 .fa-item{padding:14px 20px;border-bottom:1px solid var(--gray-100);font-size:15px;color:var(--gray-600);font-style:italic;line-height:1.6}
@@ -164,13 +167,15 @@ footer{background:var(--navy);color:var(--gray-400);padding:40px 0;text-align:ce
 
 /* ===== MOBILE ===== */
 @media(max-width:768px){
-  .chart-section{grid-template-columns:1fr}
+  .chart-scroll{margin:0 -16px 32px;padding:0 16px}
+  .chart-section{min-width:1200px}
   .pillars{grid-template-columns:1fr}
   .theme-alts{grid-template-columns:1fr}
   .roadmap-item{grid-template-columns:60px 52px 1fr;gap:8px}
   .roadmap-detail{display:none}
   nav ul{display:none}
-  .stat-val{font-size:32px}
+  .stat-val{font-size:36px}
+  .pie-section{grid-template-columns:1fr}
 }
 
 /* ===== Q14 QUOTES ===== */
@@ -542,80 +547,85 @@ function hBar(id, labels, data, color) {
   new Chart(document.getElementById(id), {
     type:'bar', data:{labels, datasets:[{data, backgroundColor:color||MB, borderRadius:4, barPercentage:.7}]},
     options:{indexAxis:'y', responsive:true, maintainAspectRatio:false,
+      layout:{padding:{left:0,right:16}},
       plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>c.raw+'%'}}},
-      scales:{x:{grid:{color:'#E2E8F0'},ticks:{callback:v=>v+'%'}}, y:{grid:{display:false}}}}
+      scales:{
+        x:{grid:{color:'#E2E8F0'},ticks:{callback:v=>v+'%'}},
+        y:{grid:{display:false},ticks:{font:{size:12},crossAlign:'far'},
+          afterFit(axis){axis.width = 340;}}
+      }}
   });
 }
 
 hBar('chartQ1',[
-'データが分断されており、BIツールと帳票出力の連携を強化したい',
+['データが分断されており、','BIツールと帳票出力の連携を強化したい'],
 'AIでBIツールを代替できるのか判断がつかない',
-'外資BIから国産BIへの切り替え・代替を検討している',
-'IoT・設備データをリアルタイムで可視化したい',
-'分析だけでなく業務実行までダッシュボード上で完結させたい',
-'自社データのセキュリティ・管理場所を重視したBIを探している',
+['外資BIから国産BIへの','切り替え・代替を検討している'],
+['IoT・設備データを','リアルタイムで可視化したい'],
+['分析だけでなく業務実行まで','ダッシュボード上で完結させたい'],
+['自社データのセキュリティ・','管理場所を重視したBIを探している'],
 '特にない',
 'わからない/答えられない'
 ],[30.0,28.3,23.0,22.0,18.7,14.0,13.3,9.3]);
 
 hBar('chartQ3',[
-'国産BIツールでおすすめはどれか',
-'Power BI以外でおすすめのBIツールは',
-'外資BIと国産BIの違いを教えて',
-'Tableauと同等の国産BIツールはあるか',
-'日本語完全対応のBIツールを教えて',
-'日本企業でも安心して使えるBIツールは',
-'kintoneと比較して効率化できるツールは'
+['国産BIツールで','おすすめはどれか'],
+['Power BI以外で','おすすめのBIツールは'],
+['外資BIと国産BIの','違いを教えて'],
+['Tableauと同等の','国産BIツールはあるか'],
+['日本語完全対応の','BIツールを教えて'],
+['日本企業でも安心して','使えるBIツールは'],
+['kintoneと比較して','効率化できるツールは']
 ],[62.3,40.6,37.7,36.2,36.2,18.8,13.0],'#2563EB');
 
 hBar('chartQ5',[
-'予実管理と帳票を一つのツールで実現したい',
-'ダッシュボードからPDF・Excelを出力したい',
-'BIと帳票出力が一体型のツールはあるか',
-'帳票文化に合ったBIツールを探している',
-'基幹データをBIで可視化しそのまま帳票にしたい',
-'Excelレポート集計を効率化できるBIは',
-'経営ダッシュボードと帳票を一元化したい'
+['予実管理と帳票を','一つのツールで実現したい'],
+['ダッシュボードから','PDF・Excelを出力したい'],
+['BIと帳票出力が','一体型のツールはあるか'],
+['帳票文化に合った','BIツールを探している'],
+['基幹データをBIで可視化し','そのまま帳票にしたい'],
+['Excelレポート集計を','効率化できるBIは'],
+['経営ダッシュボードと','帳票を一元化したい']
 ],[51.1,50.0,36.7,34.4,27.8,18.9,13.3],'#0D9488');
 
 hBar('chartQ7',[
-'AIとBIツールの使い分けを教えて',
-'AIで（データ分析）ダッシュボードを自動生成できるか',
-'AIがあればBIツールは不要か教えて',
-'生産管理のダッシュボードをAIで作れるか',
-'Power BIをやめてAIで内製すべきか',
-'AI時代にBIツールを導入する意味はあるか',
-'BIツールとAIを組み合わせる方法を教えて'
+['AIとBIツールの','使い分けを教えて'],
+['AIで（データ分析）ダッシュボードを','自動生成できるか'],
+['AIがあれば','BIツールは不要か教えて'],
+['生産管理のダッシュボードを','AIで作れるか'],
+['Power BIをやめて','AIで内製すべきか'],
+['AI時代にBIツールを','導入する意味はあるか'],
+['BIツールとAIを','組み合わせる方法を教えて']
 ],[52.9,44.7,38.8,35.3,29.4,16.5,11.8],'#8B5CF6');
 
 hBar('chartQ9',[
-'設備異常をリアルタイムで検知・通知したい',
-'IoTデータをリアルタイムでダッシュボード化したい',
-'生産ラインの稼働率をリアルタイムで可視化したい',
-'PLCのデータを自動でダッシュボードに表示したい',
-'地図上にデータを可視化できるBIツールは',
-'現場データをリアルタイムで経営層と共有したい',
-'ノーコードでIoTダッシュボードを作りたい'
+['設備異常をリアルタイムで','検知・通知したい'],
+['IoTデータをリアルタイムで','ダッシュボード化したい'],
+['生産ラインの稼働率を','リアルタイムで可視化したい'],
+['PLCのデータを自動で','ダッシュボードに表示したい'],
+['地図上にデータを','可視化できるBIツールは'],
+['現場データをリアルタイムで','経営層と共有したい'],
+['ノーコードで','IoTダッシュボードを作りたい']
 ],[45.5,40.9,37.9,30.3,28.8,25.8,18.2],'#059669');
 
 hBar('chartQ11',[
-'生産管理システムの代わりになるダッシュボードは',
-'BIツールで簡易的な業務アプリを作りたい',
-'分析から業務実行まで一気通貫のBIツールは',
-'ダッシュボード上でデータ入力や承認がしたい',
-'ノーコードでダッシュボードを作れるBIは',
-'入力機能と分析機能を両立させたBIツールは',
-'現場担当者でも作れるBIツールを探している'
+['生産管理システムの代わりになる','ダッシュボードは'],
+['BIツールで簡易的な','業務アプリを作りたい'],
+['分析から業務実行まで','一気通貫のBIツールは'],
+['ダッシュボード上で','データ入力や承認がしたい'],
+['ノーコードで','ダッシュボードを作れるBIは'],
+['入力機能と分析機能を','両立させたBIツールは'],
+['現場担当者でも作れる','BIツールを探している']
 ],[39.3,33.9,32.1,32.1,28.6,21.4,10.7],'#F59E0B');
 
 hBar('chartQ13',[
-'セキュリティに厳しい企業向けのBIツールは',
-'AI時代にデータ基盤はどう変わるのか教えて',
-'自社データを外部に出さずBIで可視化したい',
-'データの真正性を担保しつつAIを活用する方法は',
-'オンプレミスで運用できるBIツールのおすすめは',
-'データ主権を守りつつクラウドBIを使う方法は',
-'AIに依存しないデータ活用基盤を作りたい'
+['セキュリティに厳しい','企業向けのBIツールは'],
+['AI時代にデータ基盤は','どう変わるのか教えて'],
+['自社データを外部に出さず','BIで可視化したい'],
+['データの真正性を担保しつつ','AIを活用する方法は'],
+['オンプレミスで運用できる','BIツールのおすすめは'],
+['データ主権を守りつつ','クラウドBIを使う方法は'],
+['AIに依存しない','データ活用基盤を作りたい']
 ],[57.1,54.8,45.2,38.1,31.0,23.8,16.7],'#EF4444');
 
 new Chart(document.getElementById('chartQ15'),{
@@ -628,6 +638,16 @@ new Chart(document.getElementById('chartQ15'),{
 // scroll animation
 const obs = new IntersectionObserver(entries => {entries.forEach(e => {if(e.isIntersecting) e.target.classList.add('visible')})}, {threshold:.15});
 document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+// wrap chart-sections in scroll containers
+document.querySelectorAll('.chart-section').forEach(cs => {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'chart-scroll';
+  if(cs.classList.contains('fade-in')){cs.classList.remove('fade-in');wrapper.classList.add('fade-in');}
+  cs.parentNode.insertBefore(wrapper, cs);
+  wrapper.appendChild(cs);
+  obs.observe(wrapper);
+});
 </script>
 </body>
 </html>
